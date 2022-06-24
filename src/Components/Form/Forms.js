@@ -63,7 +63,6 @@ function Forms(props) {
                         console.log(resMessage);
                     }
                 );
-
         }
 
 
@@ -76,8 +75,7 @@ function Forms(props) {
                 {loadingForms ? (<CircularProgress />) : ""}
                 <Container className={classes.cardGrid} maxWidth="lg">
                     <Grid container spacing={6}>
-
-                        {forms && forms.length > 0 &&  forms.map((form, i) => (
+                        {forms && forms.length > 0 && forms.map((form, i) => (
                             <OneForm formData={form} key={i} />
                         ))}
                     </Grid>

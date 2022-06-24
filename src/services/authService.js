@@ -7,68 +7,78 @@ const API_URL = "http://localhost:5000/api/user/";
 
 
 
-export default   {
+export default {
 
-    isAuthenticated() {
-      const token = localStorage.getItem('userTicket')
-        if (token) {
-          return true
-        } else {
-          return false
+  isAuthenticated() {
+    const token = localStorage.getItem('userTicket')
+    if (token) {
+      return true
+    } else {
+      return false
+    }
+  },
+
+  getGuestUser() {
+    return { name: "Guest 123", userId: "guest123", email: "coolboy69@gg.com" }
+  },
+
+  authenticate(cb) {
+    this.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+
+  signout(cb) {
+    this.isAuthenticated = false;
+    setTimeout(cb, 100);
+  },
+
+
+  loginWithGoogle(res) {
+    var data = {
+      name: res.profileObj.name,
+      email: res.profileObj.email,
+      image: res.profileObj.imageUrl
+    }
+
+    return axios
+      .post(API_URL + "login", data)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.accessToken) {
+          localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
         }
-    },
+        return response.data;
+      });
+  },
 
-    getGuestUser(){
-        return {name: "Guest 123", userId: "guest123", email: "coolboy69@gg.com"}
-    },
+  loginAsGuest() {
+    var userData = {
+      name: "Cool Guest",
+      id: "62b54f54890d0a4243c21948",
+      email: "coolboy69@gg.com"
+    }
 
-    authenticate(cb) {
-      this.isAuthenticated = true;
-      setTimeout(cb, 100); // fake async
-    },
+    //create guest
+    axios.post(API_URL + "login", data)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.accessToken) {
+          localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
+        }
+        return response.data;
+      });
 
-    signout(cb) {
-      this.isAuthenticated = false;
-      setTimeout(cb, 100);
-    },
+    const accessToken = jwt.sign(userData, "thisisaguesttokenwithsomeshittystring8", { expiresIn: '24h' });
+    localStorage.setItem("userTicket", JSON.stringify(accessToken));
+    return accessToken;
 
+  },
 
-    loginWithGoogle(res) {
-      var data = {
-        name: res.profileObj.name,
-        email : res.profileObj.email,
-        image: res.profileObj.imageUrl
-      }
+  logout() {
+    localStorage.removeItem("userTicket");
+  },
 
-      return axios
-        .post(API_URL + "login", data)
-        .then(response => {
-          console.log(response.data);
-          if (response.data.accessToken) {
-            localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
-          }
-          return response.data;
-        });
-    },
-
-    loginAsGuest(){
-      var userData = {
-        name: "Cool Guest",
-        id: "62b54f54890d0a4243c21948",
-        email: "coolboy69@gg.com"
-      }
-
-      const accessToken = jwt.sign(userData, "thisisaguesttokenwithsomeshittystring8", {expiresIn: '24h'});
-      localStorage.setItem("userTicket", JSON.stringify(accessToken));
-      return accessToken;
-
-    },
-
-    logout() {
-      localStorage.removeItem("userTicket");
-    },
-
-    getCurrentUser() {
-       return jwtDecode(localStorage.getItem('userTicket'));
-     },
-  };
+  getCurrentUser() {
+    return jwtDecode(localStorage.getItem('userTicket'));
+  },
+};

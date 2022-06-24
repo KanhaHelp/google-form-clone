@@ -71,7 +71,7 @@ function Login(props){
 
     const loginAsGuest = ()=>{
         authService.loginAsGuest()
-        history.push(from.pathname);
+        // history.push(from.pathname);
     }
 
     const handleLoginFailure = (response)=>{
