@@ -21,12 +21,9 @@ function Main() {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={Login}/>
-
                 <PrivateRoute path="/form/:formId" component={EditForm}/>
                 <Route exact path="/s/:formId" component={UserView} />
-                <Route exact path="/fuck" component={RadioCheck} />
-
-
+                <Route exact path="/radiocheck" component={RadioCheck} />
             </Switch>
         </Router>
     </div>

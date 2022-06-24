@@ -131,14 +131,27 @@ module.exports = {
             var userId = req.params.userId;
             console.log(userId);
             await UserModel.findOne({ _id: userId }).then(async (user) => {
+
+                console.log('ggggggggggggggggggggg');
                 if (user == null) {
-                    res.status(404).send('User not found');
-                } else {
+                    // res.status(404).send('User not found');
+
+                    console.log('user not found');
+
                     await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
                         console.log(records);
 
                         res.status(200).json(records);
                     });
+                } else {
+
+                    res.status(200).send('User Exist');
+
+                    // await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
+                    console.log(records);
+
+                    res.status(200).json(records);
+                    // });
                 }
 
                 //   res.send(docs.createdForms)
