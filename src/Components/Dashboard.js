@@ -161,7 +161,7 @@ function Dashboard() {
         formService.createForm(data)
         .then((result) => {
           console.log('result' , result);
-          // history.push("/form/"+result._id);
+          history.push("/form/"+result._id);
 
            },
 

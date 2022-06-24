@@ -6,68 +6,67 @@ const jwtDecode = require('jwt-decode');
 
 
 module.exports = {
-    formsGet : async(req,res)=>{
-        try{
+    formsGet: async (req, res) => {
+        try {
             var result = await FormModel.find().lean();
             res.send(result);
-        }catch(e){
+        } catch (e) {
             res.send(e);
         }
     },
 
-    createForm: async(req,res)=>{
+    createForm: async (req, res) => {
 
         console.log('inside create form api')
 
-             var data = {
-                createdBy : req.body.createdBy,
+
+        try {
+
+            var data = {
+                createdBy: req.body.createdBy,
                 name: req.body.name,
                 description: req.body.description
-             }
-
-             console.log('first',)
-        // try {
-
+            }
 
             var newForm = new FormModel(data)
-            await newForm.save().then((docs)=>{
+            await newForm.save().then((docs) => {
                 UserModel.updateOne(
-                    {_id: data.createdBy },
-                    { $push: { createdForms: docs._id}})
-                    .then(()=>{
-                    console.log("Form id added to user deeatils");
-                }).catch(error => console.log("got some error"))
+                    { _id: data.createdBy },
+                    { $push: { createdForms: docs._id } })
+                    .then(() => {
+                        console.log("Form id added to user deeatils");
+                    }).catch(error => console.log("got some error"))
                 res.status(200).json(
                     docs
                 );
             })
 
-        // } catch (error) {
+        } catch (error) {
 
-        //     console.log('fffffff', error)
-        //     res.send(error)
-        // }
+            console.log('fffffff', error)
+            res.send(error)
+        }
     },
 
-    getFormById: async(req, res)=>{
+    getFormById: async (req, res) => {
         try {
             var formId = req.params.formId;
 
-            await FormModel.findOne({_id: formId}).then(async(form)=>{
+            await FormModel.findOne({ _id: formId }).then(async (form) => {
 
-                 if(form == null){
-                     res.status(404).send('Form not found');
-                 } else{
-                     res.status(200).json(form)
-                 }
-             })
+                if (form == null) {
+                    res.status(404).send('Form not found');
+                } else {
+                    res.status(200).json(form)
+                }
+            })
 
         } catch (error) {
             res.send(error)
         }
     },
 
-    deleteForm: async(req, res)=>{
+    deleteForm: async (req, res) => {
 
         try {
             var formId = req.params.formId;
@@ -76,19 +75,19 @@ module.exports = {
             console.log(formId);
             console.log(userId);
 
-            await FormModel.findOne({_id: formId}).then(async(form)=>{
-                 console.log(form);
-                if(form== null){
+            await FormModel.findOne({ _id: formId }).then(async (form) => {
+                console.log(form);
+                if (form == null) {
                     res.status(404).send('Form not found or already deleted');
                 } else {
-                    if(form.createdBy == userId){
-                        form.remove(function(err) {
-                            if(err) { return res.status(500).send(err) }
+                    if (form.createdBy == userId) {
+                        form.remove(function (err) {
+                            if (err) { return res.status(500).send(err) }
                             console.log('Form deleted');
                             return res.status(202).send("Form Deleted")
-                          });
+                        });
                     }
-                    else{
+                    else {
                         res.status(401).send("You are not the owner of this Form");
                     }
                 }
@@ -98,9 +97,9 @@ module.exports = {
         }
     },
 
-    editForm : async(req, res)=>{
+    editForm: async (req, res) => {
         try {
-            var  formId =  req.body.formId;
+            var formId = req.body.formId;
             var data = {
                 name: req.body.name,
                 description: req.body.description,
@@ -113,11 +112,11 @@ module.exports = {
             console.log(data);
 
 
-            FormModel.findByIdAndUpdate(formId, data ,{new: true} ,(err, result)=>{
-                if(err){
+            FormModel.findByIdAndUpdate(formId, data, { new: true }, (err, result) => {
+                if (err) {
                     res.status(500).send(err)
                 }
-                else{
+                else {
                     res.status(200).json(result)
                 }
             });
@@ -127,22 +126,22 @@ module.exports = {
         }
     },
 
-    getAllFormsOfUser: async(req, res)=>{
+    getAllFormsOfUser: async (req, res) => {
         try {
             var userId = req.params.userId;
             console.log(userId);
-            await UserModel.findOne({_id:userId}).then(async(user)=>{
-                if(user == null){
+            await UserModel.findOne({ _id: userId }).then(async (user) => {
+                if (user == null) {
                     res.status(404).send('User not found');
-                } else{
-                   await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
-                       console.log(records);
+                } else {
+                    await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
+                        console.log(records);
 
-                       res.status(200).json(records);
-                   });
+                        res.status(200).json(records);
+                    });
                 }
 
-             //   res.send(docs.createdForms)
+                //   res.send(docs.createdForms)
             });
 
 
@@ -151,7 +150,7 @@ module.exports = {
         }
     },
 
-    submitResponse : async(req, res)=>{
+    submitResponse: async (req, res) => {
         try {
             var data = {
                 formId: req.body.formId,
@@ -164,15 +163,15 @@ module.exports = {
 
             if (data.response.length > 0) {
                 var newResponse = new ResponseModel(data)
-               // console.log(newResponse);
+                // console.log(newResponse);
 
-                await newResponse.save().then((docs)=>{
+                await newResponse.save().then((docs) => {
                     res.status(200).json(
                         docs
                     );
                 })
             }
-            else{
+            else {
                 res.status(400).send("FIll atleast one field, MF!");
             }
         } catch (error) {
@@ -180,22 +179,22 @@ module.exports = {
         }
     },
 
-    allResponses : async(req,res)=>{
-        try{
+    allResponses: async (req, res) => {
+        try {
             var result = await ResponseModel.find().lean();
             res.json(result);
-        }catch(e){
+        } catch (e) {
             res.send(e);
         }
     },
 
-    getResponse: async(req, res)=>{
+    getResponse: async (req, res) => {
         try {
             var formId = req.params.formId;
-         //   console.log(formId);
+            //   console.log(formId);
 
-            await ResponseModel.find({formId: formId}).then(async(responses)=>{
-                    res.status(200).json(responses)
+            await ResponseModel.find({ formId: formId }).then(async (responses) => {
+                res.status(200).json(responses)
             })
 
         } catch (error) {

@@ -12,11 +12,9 @@ export default {
     },
 
     createForm(data){
-        console.log('all data' , data);
         return axios
         .post(API_URL + "create", data)
         .then(response =>{
-            console.log('after create data', response.data);
             return response.data;
         })
     },

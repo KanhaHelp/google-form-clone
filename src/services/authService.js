@@ -43,9 +43,9 @@ export default   {
       return axios
         .post(API_URL + "login", data)
         .then(response => {
-          console.log(response.data); 
+          console.log(response.data);
           if (response.data.accessToken) {
-            localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));          
+            localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
           }
           return response.data;
         });
@@ -53,14 +53,14 @@ export default   {
 
     loginAsGuest(){
       var userData = {
-        name: "Cool Guest", 
-        id: "y2jsdqakq9rqyvtd4gf6g", 
+        name: "Cool Guest",
+        id: "62b54f54890d0a4243c21948",
         email: "coolboy69@gg.com"
       }
 
       const accessToken = jwt.sign(userData, "thisisaguesttokenwithsomeshittystring8", {expiresIn: '24h'});
-      localStorage.setItem("userTicket", JSON.stringify(accessToken));   
-      return accessToken;   
+      localStorage.setItem("userTicket", JSON.stringify(accessToken));
+      return accessToken;
 
     },
 

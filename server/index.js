@@ -30,7 +30,7 @@ const upload = multer({ storage });
 
 //middleware
 app.use(express.static('public'))
-app.use(cors());
+app.use(cors('http://localhost:3000/'));
 app.use(bodyParser.json({limit : '50mb',extended : true}));
 app.use(bodyParser.urlencoded({limit: '50mb',extended : true}));
 app.use(express.json());

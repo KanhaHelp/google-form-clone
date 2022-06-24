@@ -39,7 +39,7 @@ function Login(props){
     let history = useHistory();
     const [isLogined , setIsLogined] = React.useState(false);
     const { from } = props.location.state || { from: { pathname: '/' } }
-    
+
     React.useEffect(()=>{
         setIsLogined(authService.isAuthenticated())
     }, [])
@@ -49,7 +49,7 @@ function Login(props){
         authService.loginWithGoogle(response)
         .then(() => {
           console.log(from.pathname);
-          
+
           if(from.pathname == "/login"){
             history.push("/");
 
@@ -65,7 +65,7 @@ function Login(props){
               error.message ||
               error.toString();
             console.log(resMessage);
-          }      
+          }
           );
     }
 
@@ -77,7 +77,7 @@ function Login(props){
     const handleLoginFailure = (response)=>{
         console.log('Failed to log in');
     }
-    
+
     const handleLogoutFailure = (response)=>{
         console.log('Failed to log out');
     }
@@ -95,7 +95,7 @@ function Login(props){
                 <AppBar position="relative" style={{backgroundColor: 'teal'}}>
                 <Toolbar>
                     <ViewListIcon className={classes.icon} onClick={()=>{history.push('/')}} />
-                   
+
                     <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                     Velocity Forms
                     </Typography>
@@ -112,11 +112,11 @@ function Login(props){
 
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             {isLogined ?
-                "": 
+                "":
                 <GoogleLogin
                     clientId={CLIENT_ID}
                     render={renderProps => (
-                        <GoogleButton onClick={renderProps.onClick} disabled={renderProps.disabled} style={{textAlign: 'center', alignSelf: 'center'}} />                      
+                        <GoogleButton onClick={renderProps.onClick} disabled={renderProps.disabled} style={{textAlign: 'center', alignSelf: 'center'}} />
                       )}
                     buttonText='Login'
                     onSuccess={loginGoogle}
@@ -143,7 +143,7 @@ function Login(props){
                }
             </div>
         </div>
-                
+
             </main>
         </div>
     )
