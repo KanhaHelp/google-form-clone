@@ -65,6 +65,23 @@ export default {
       });
   },
 
+  signupWithEmail(email) {
+    var userData = {
+      email : email
+    }
+
+    //create guest
+    return axios.post(API_URL + "create", userData)
+      .then(response => {
+        console.log('after create guest user', response);
+        if (response.data.accessToken) {
+          localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
+        }
+        // return response.data;
+      });
+  },
+
+
   logout() {
     localStorage.removeItem("userTicket");
   },

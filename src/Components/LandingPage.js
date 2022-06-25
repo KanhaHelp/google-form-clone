@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   heroButtons: {
     marginTop: theme.spacing(4),
   },
-  
+
   footer: {
     backgroundColor: '#DAE0E2',
     padding: theme.spacing(2),
@@ -124,6 +124,9 @@ export default function LangingPage() {
   function loginClick(){
     history.push('/login')
   }
+  function signupClick(){
+    history.push('/signup')
+  }
 
   return (
     <div>
@@ -136,7 +139,7 @@ export default function LangingPage() {
               Velocity Forms
             </Typography>
             <Button color="inherit" onClick={loginClick}>Login</Button>
-          
+
           </Toolbar>
         </AppBar>
       </div>
@@ -161,16 +164,16 @@ export default function LangingPage() {
                     Plan your next camping trip, manage event registrations, whip up a quick poll, create a pop quiz, and much more.
                   </Typography>
                   <div className={classes.buttons}>
-                    <Button variant="contained" color="primary" className={classes.buttongg} onClick={loginClick}>
+                    <Button variant="contained" color="primary" className={classes.buttongg} onClick={signupClick}>
                       Signup Now
                     </Button>
                     <Button variant="contained" color="primary" className={classes.buttongg} onClick={loginClick}>
                       Login
                     </Button>
                   </div>
-                 
-              
-                  
+
+
+
                 </div>
               </Grid>
             </Grid>
@@ -178,7 +181,7 @@ export default function LangingPage() {
            <br></br>
            <br></br>
            <br></br>
-           
+
 
            <div>
            <Grid container spacing={4}>
@@ -196,7 +199,7 @@ export default function LangingPage() {
                         <Typography variant="subtitle1" paragraph>
                         Use your own photo or logo, and Forms will pick just the right colors to complete your own unique form, or choose from a set of curated themes to set the tone. We can store images for future.
                         </Typography>
-                       
+
                       </CardContent>
                     </div>
                     <Hidden xsDown>
@@ -211,7 +214,7 @@ export default function LangingPage() {
                     <div className={classes.cardDetails}>
                       <CardContent>
                         <Typography component="h2" variant="h5">
-                         
+
                           Organized & analyzed
                         </Typography>
                         <Typography variant="subtitle1"  style={{color: 'teal'}}>
@@ -219,7 +222,7 @@ export default function LangingPage() {
                         </Typography>
                         <Typography variant="subtitle1" paragraph>
                         Responses to your surveys are neatly and automatically collected in Forms, with real time response info and charts. Or, download a csv/json or load data in google sheets.                        </Typography>
-                       
+
                       </CardContent>
                     </div>
                     <Hidden xsDown>
@@ -238,8 +241,8 @@ export default function LangingPage() {
           <br></br>
         </div>
       </main>
-      
-      
+
+
       <footer className={classes.footer} style={{}}>
         <Typography variant="h6" align="center" gutterBottom>
           Velocity Forms <small>(An Open source clone of google forms)</small>

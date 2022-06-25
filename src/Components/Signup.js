@@ -35,10 +35,12 @@ const useStyles = makeStyles((theme) => ({
 
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 
-function Login(props) {
+function Signup(props) {
   const classes = useStyles();
   let history = useHistory();
   const [isLogined, setIsLogined] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+
   const { from } = props.location.state || { from: { pathname: '/' } }
 
   React.useEffect(() => {
@@ -89,6 +91,15 @@ function Login(props) {
     setIsLogined(false);
   }
 
+  const handleChange = (event) => {
+    setEmail(event.target.value)
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await authService.signupWithEmail(email)
+    history.push(from.pathname);
+  }
 
   return (
     <div>
@@ -97,7 +108,6 @@ function Login(props) {
         <AppBar position="relative" style={{ backgroundColor: 'teal' }}>
           <Toolbar>
             <ViewListIcon style={{ cursor: "pointer" }} className={classes.icon} onClick={() => { history.push('/') }} />
-
             <Typography style={{ cursor: "pointer" }} onClick={() => { history.push('/') }} variant="h6" color="inherit" noWrap className={classes.title}>
               Velocity Forms
             </Typography>
@@ -108,50 +118,38 @@ function Login(props) {
       <main>
 
 
-        <Typography component="h1" variant="h5">
-          Login
+      {!isLogined ? (
+        <>
+         <Typography component="h1" variant="h5">
+          Signup
         </Typography>
         <br></br>
         <br></br>
-
+        </>):
+        ''}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {isLogined ?
-            "" :
-            <GoogleLogin
-              clientId={CLIENT_ID}
-              render={renderProps => (
-                <GoogleButton onClick={renderProps.onClick} disabled={renderProps.disabled} style={{ textAlign: 'center', alignSelf: 'center' }} />
-              )}
-              buttonText='Login'
-              onSuccess={loginGoogle}
-              onFailure={handleLoginFailure}
-              cookiePolicy={'single_host_origin'}
-              responseType='code,token'
-            />
-          }
-          <br></br>
 
+          <br></br>
           <br></br>
           <div>
             {isLogined ? (<div>
               <p>Already logged in. Want to logout?</p>
               <button onClick={logout}>Logout </button>
             </div>) : (
-              <Button
-                onClick={loginAsGuest}
-                variant="contained"
-                style={{ textTransform: "none" }}
-                startIcon={<Avatar src={"https://static.thenounproject.com/png/3244607-200.png"} />} >
-                Login as Guest(Anonymous)
-              </Button>
+              <form onSubmit={handleSubmit}>
+              <label>
+                Name:
+                <input type="text" value={email} onChange={handleChange} />
+              </label>
+              <input type="submit" value="Submit" />
+            </form>
             )
             }
           </div>
         </div>
-
       </main>
     </div>
   )
 }
 
-export default Login;
+export default Signup;

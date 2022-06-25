@@ -10,6 +10,7 @@ import Home from './Components/Home'
 import auth from './services/authService'
 import EditForm from './Components/Form/EditForm'
 import Login from './Components/Login'
+import Signup from './Components/Signup'
 import PrivateRoute from './Components/util/PrivateRoute'
 import UserView from './Components/Responding/UserView'
 import RadioCheck from './Components/Responding/RadioCheck'
@@ -21,6 +22,8 @@ function Main() {
             <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={Login}/>
+                <Route exact path="/signup" component={Signup}/>
+
                 <PrivateRoute path="/form/:formId" component={EditForm}/>
                 <Route exact path="/s/:formId" component={UserView} />
                 <Route exact path="/radiocheck" component={RadioCheck} />
