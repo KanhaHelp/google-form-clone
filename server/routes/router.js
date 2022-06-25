@@ -9,7 +9,7 @@ router.use('/user', UserRouter)
 router.use('/form', FormRouter)
 
 router.get('/', (req, res) => {
-    res.send("Router.js working fine")
+    res.send("Hello From backend API Server")
 })
 
 

@@ -73,44 +73,13 @@ module.exports = {
 
     createUser: async (req, res) => {
 
-        //if email not find in email then create a Guest user
-        if (!req.body.email) {
+        try {
+            //if email not find in email then create a Guest user
+            if (!req.body.email) {
 
-            let data = {
-                guestId: uuidv4(),
-                userType: "Guest"
-            }
-
-            let newUser = await UserModel.create(data);
-
-            if (newUser) {
-
-                var userData = {
-                    id: newUser._id,
-                    guestId: newUser.guestId,
-                    userType: newUser.userType,
-                }
-                const accessToken = jwt.sign(userData, 'KKKKK', { expiresIn: '24h' });
-
-                return res.status(200).json({
-                    success: true,
-                    data: userData,
-                    accessToken
-                });
-
-            }
-        }
-
-        //if email find then create member
-        if (req.body.email) {
-
-            var result = await UserModel.findOne({ email: req.body.email }).lean()
-
-            if (!result) {
                 let data = {
-                    email: req.body.email,
-                    name: req.body.name ? req.body.name : '',
-                    userType: "Member"
+                    guestId: uuidv4(),
+                    userType: "Guest"
                 }
 
                 let newUser = await UserModel.create(data);
@@ -133,9 +102,47 @@ module.exports = {
                 }
             }
 
+            //if email find then create member
+            if (req.body.email) {
 
+                var result = await UserModel.findOne({ email: req.body.email }).lean()
 
+                if (!result) {
+                    let data = {
+                        email: req.body.email,
+                        name: req.body.name ? req.body.name : '',
+                        userType: "Member"
+                    }
 
+                    let newUser = await UserModel.create(data);
+
+                    if (newUser) {
+
+                        var userData = {
+                            id: newUser._id,
+                            email: newUser.email,
+                            guestId: newUser.guestId,
+                            userType: newUser.userType,
+                        }
+                        const accessToken = jwt.sign(userData, 'KKKKK', { expiresIn: '24h' });
+
+                        return res.status(200).json({
+                            success: true,
+                            data: userData,
+                            accessToken
+                        });
+
+                    }
+                } else {
+                    return res.status(400).json({
+                        success: false,
+                        message: "User having this email is already exist",
+                    });
+                }
+            }
+
+        } catch (error) {
+            res.send(error);
         }
 
     }

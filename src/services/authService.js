@@ -52,26 +52,17 @@ export default {
   },
 
   loginAsGuest() {
-    var userData = {
-      name: "Cool Guest",
-      id: "62b54f54890d0a4243c21948",
-      email: "coolboy69@gg.com"
-    }
+    var userData = {}
 
     //create guest
-    axios.post(API_URL + "login", data)
+    axios.post(API_URL + "create", userData)
       .then(response => {
-        console.log(response.data);
+        console.log('after create guest user', response);
         if (response.data.accessToken) {
           localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
         }
         return response.data;
       });
-
-    const accessToken = jwt.sign(userData, "thisisaguesttokenwithsomeshittystring8", { expiresIn: '24h' });
-    localStorage.setItem("userTicket", JSON.stringify(accessToken));
-    return accessToken;
-
   },
 
   logout() {

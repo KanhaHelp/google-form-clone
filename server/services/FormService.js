@@ -127,39 +127,17 @@ module.exports = {
     },
 
     getAllFormsOfUser: async (req, res) => {
+
         try {
+
             var userId = req.params.userId;
-            console.log(userId);
-            await UserModel.findOne({ _id: userId }).then(async (user) => {
 
-                console.log('ggggggggggggggggggggg');
-                if (user == null) {
-                    // res.status(404).send('User not found');
+            let allForms = await FormModel.find().where({ createdBy: userId });
 
-                    console.log('user not found');
-
-                    await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
-                        console.log(records);
-
-                        res.status(200).json(records);
-                    });
-                } else {
-
-                    res.status(200).send('User Exist');
-
-                    // await FormModel.find().where('_id').in(user.createdForms).exec((err, records) => {
-                    console.log(records);
-
-                    res.status(200).json(records);
-                    // });
-                }
-
-                //   res.send(docs.createdForms)
-            });
-
+            return res.status(200).json(allForms);
 
         } catch (error) {
-            res.send(error)
+            res.send(error);
         }
     },
 
