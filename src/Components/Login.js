@@ -16,6 +16,7 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 
 import GoogleButton from 'react-google-button'
 import Avatar from "@material-ui/core/Avatar";
+import { AspectRatioTwoTone } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -69,8 +70,9 @@ function Login(props){
           );
     }
 
-    const loginAsGuest = ()=>{
-        authService.loginAsGuest()
+    const loginAsGuest = async ()=>{
+        await authService.loginAsGuest()
+
         history.push(from.pathname);
     }
 

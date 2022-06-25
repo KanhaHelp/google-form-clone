@@ -13,8 +13,8 @@ const isAuthenticated = auth.isAuthenticated();
         ? (
             <Dashboard />
         ) : (
-          <LandingPage />   
-        )  
+          <LandingPage />
+        )
   );
 }
 

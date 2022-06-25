@@ -55,13 +55,13 @@ export default {
     var userData = {}
 
     //create guest
-    axios.post(API_URL + "create", userData)
+    return axios.post(API_URL + "create", userData)
       .then(response => {
         console.log('after create guest user', response);
         if (response.data.accessToken) {
           localStorage.setItem("userTicket", JSON.stringify(response.data.accessToken));
         }
-        return response.data;
+        // return response.data;
       });
   },
 
